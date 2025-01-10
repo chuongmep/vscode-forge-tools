@@ -9,7 +9,7 @@ import {
 	WebhooksClient,
 	BIM360Client,
 	IActivityDetail
-} from 'forge-server-utils';
+} from 'aps-sdk-node';
 import * as dmp from './providers/data-management';
 import * as dap from './providers/design-automation';
 import * as dmc from './commands/data-management';
@@ -18,7 +18,7 @@ import * as dac from './commands/design-automation';
 import * as dai from './interfaces/design-automation';
 import * as mdi from './interfaces/model-derivative';
 import * as hi  from './interfaces/hubs';
-import { Region } from 'forge-server-utils/dist/common';
+import { Region } from 'aps-sdk-node/dist/common';
 import { IContext } from './common';
 import { WebhooksDataProvider, IWebhook, IWebhookEvent } from './providers/webhooks';
 import { viewWebhookDetails, createWebhook, deleteWebhook, updateWebhook } from './commands/webhooks';
@@ -28,7 +28,7 @@ import { getEnvironments, setupNewEnvironment, IEnvironment } from './environmen
 
 const DefaultAuthPort = 8123;
 
-// TODO: reuse the enum from forge-server-utils
+// TODO: reuse the enum from aps-sdk-node
 enum DesignAutomationRegion {
     US_WEST = 'us-west',
     US_EAST = 'us-east'
@@ -42,8 +42,6 @@ export function activate(_context: vscode.ExtensionContext) {
 		return;
 	}
 	let env = environments[0];
-
-	console.log('Extension "autodesk-platform-services" has been loaded.');
 
 	let context: IContext = {
 		extensionContext: _context,
@@ -60,8 +58,10 @@ export function activate(_context: vscode.ExtensionContext) {
 			extensions: vscode.workspace.getConfiguration(undefined, null).get<string[]>('autodesk.forge.viewer.extensions') || [],
 			env: vscode.workspace.getConfiguration(undefined, null).get<string>('autodesk.forge.viewer.env'),
 			api: vscode.workspace.getConfiguration(undefined, null).get<string>('autodesk.forge.viewer.api')
-		}
+		},
+        log: vscode.window.createOutputChannel("Autodesk Platform Services", { log: true })
 	};
+    context.log.info('Extension has been loaded.');
 
 	// Setup buckets view
 	let simpleStorageDataProvider = new dmp.SimpleStorageDataProvider(context);
@@ -114,11 +114,10 @@ export function activate(_context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('forge.login', async () => {
 		try {
 			const port = vscode.workspace.getConfiguration(undefined, null).get<number>('autodesk.forge.authentication.port') || DefaultAuthPort;
-			const data = await login(env.clientId, port, context);
-			const token = data.get('access_token');
-			const expires = data.get('expires_in');
-			const tokenType = data.get('token_type');
-			if (!token || !expires || tokenType !== 'Bearer') {
+			const credentials = await login(env.clientId, port, context);
+			const token = credentials.access_token;
+			const expires = credentials.expires_in;
+			if (!token || !expires) {
 				throw new Error('Authentication data missing or incorrect.');
 			}
 			context.threeLeggedToken = token;
@@ -154,6 +153,7 @@ export function activate(_context: vscode.ExtensionContext) {
 		}
 		env = environments.find(environment => environment.title === name) as IEnvironment;
 		delete context.threeLeggedToken;
+        context.environment = env;
 		context.credentials = { client_id: env.clientId, client_secret: env.clientSecret };
 		context.dataManagementClient.reset(context.credentials, env.host, env.region as Region);
 		context.modelDerivativeClient2L.reset(context.credentials, env.host, env.region as Region);

@@ -6,11 +6,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [2.7.1] - 2024-09-11
+
+- Added
+  - (experimental) support of `APAC` region (https://aps.autodesk.com/blog/australia-now-supported-region-primary-storage-project-data)
+- Fixed
+  - Moved to new version of svf-utils (with a fix for SVF downloads on Windows)
+
+## [2.7.0] - 2024-08-06
+
+- Added
+  - Display versions next to DA bundle and activity aliases (https://github.com/petrbroz/vscode-forge-tools/issues/89)
+  - Debugging information logged into a custom output channel
+- Fixed
+  - Creation of empty OSS objects (https://github.com/petrbroz/vscode-forge-tools/issues/90)
+- Updated
+  - Moved to vscode API version [1.92](https://code.visualstudio.com/updates/v1_92)
+
+## [2.6.2] - 2024-05-03
+
+- Fixed
+  - Bug in SVF/glTF downloads after switching to another environment
+  - Issue with 3-legged OAuth callback
+
+## [2.6.1] - 2024-04-11
+
+- Fixed
+  - Bug in SVF/glTF downloads
+
+## [2.6.0] - 2024-04-10
+
 - Added
   - Sorting the list of Design Automatin engines (kudos to [CADBIMDeveloper](https://github.com/CADBIMDeveloper)!)
   - Users can now convert designs into derivatives other than just SVF or SVF2, and download them (kudos to [CADBIMDeveloper](https://github.com/CADBIMDeveloper)!)
 - Fixed
   - Broken previewing of Fusion 360 designs (because of their GUIDs containing JSON data)
+- Changed
+  - Moved to the latest (unofficial) APS SDK that has been updated for Auth v2 API
 
 ## [2.5.2] - 2023-04-04
 

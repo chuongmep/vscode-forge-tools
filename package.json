@@ -6,7 +6,7 @@
 	"description": "Visual Studio Code extension for accessing Autodesk Platform Services.",
 	"author": "Petr Broz <petr.broz@autodesk.com>",
 	"license": "MIT",
-	"version": "2.5.2",
+	"version": "2.7.1",
 	"homepage": "https://marketplace.visualstudio.com/items?itemName=petrbroz.vscode-forge-tools",
 	"repository": {
 		"type": "git",
@@ -23,7 +23,7 @@
 		"extension"
 	],
 	"engines": {
-		"vscode": "^1.45.0"
+		"vscode": "^1.92.0"
 	},
 	"categories": [
 		"Other"
@@ -69,7 +69,8 @@
 								"description": "APS availability region",
 								"enum": [
 									"US",
-									"EMEA"
+									"EMEA",
+									"APAC"
 								],
 								"default": "US"
 							},
@@ -878,7 +879,7 @@
 		"@types/node": "^12.0.0",
 		"@types/react": "^18.0.28",
 		"@types/react-dom": "^18.0.11",
-		"@types/vscode": "1.45",
+		"@types/vscode": "1.92",
 		"@vscode/webview-ui-toolkit": "^1.2.2",
 		"esbuild": "^0.17.11",
 		"react": "^18.2.0",
@@ -889,9 +890,9 @@
 	},
 	"dependencies": {
 		"@types/fs-extra": "^9.0.0",
-		"axios": "^1.6.0",
-		"forge-convert-utils": "^4.0.2",
-		"forge-server-utils": "^8.3.4",
-		"fs-extra": "^9.0.0"
+		"aps-sdk-node": "^10.0.1",
+		"axios": "^0.28.0",
+		"fs-extra": "^9.0.0",
+		"svf-utils": "^5.0.5"
 	}
 }
